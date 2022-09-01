@@ -9,7 +9,6 @@ let defaultDeploymentTarget = "16.0"
 public func frameworkTargets(
   name: String,
   platform: Platform = .iOS,
-  usePlatformSuffix: Bool = false,
   deploymentTarget: String? = nil,
   dependencies _: [TargetDependency] = [],
   addTestTarget: Bool = false,
@@ -21,7 +20,7 @@ public func frameworkTargets(
     "IPHONEOS_DEPLOYMENT_TARGET": .string(deploymentTarget ?? defaultDeploymentTarget),
   ])
 
-  let mainTargetName = usePlatformSuffix ? "\(name)_\(platform)" : name
+  let mainTargetName = name
 
   let mainTarget = Target(
     name: mainTargetName,
@@ -39,7 +38,7 @@ public func frameworkTargets(
 
   if addTestTarget {
     let testTarget = Target(
-      name: usePlatformSuffix ? "\(name)Tests_\(platform)" : "\(name)Tests" ,
+      name: "\(name)Tests" ,
       platform: platform,
       product: .unitTests,
       bundleId: "\(organization).\(name)Tests.\(platform)",
@@ -59,7 +58,6 @@ public func frameworkTargets(
 public func applicationTargets(
   name: String,
   platform: Platform = .iOS,
-  usePlatformSuffix: Bool = false,
   deploymentTarget: String? = nil,
   dependencies: [TargetDependency] = [],
   addTestTarget: Bool = false,
@@ -79,7 +77,7 @@ public func applicationTargets(
     "IPHONEOS_DEPLOYMENT_TARGET": .string(deploymentTarget ?? defaultDeploymentTarget),
   ])
 
-  let appTargetName = usePlatformSuffix ? "\(name)_\(platform)" : name
+  let appTargetName = name
 
   let mainTarget = Target(
     name: appTargetName,
@@ -97,7 +95,7 @@ public func applicationTargets(
 
   if addTestTarget {
     let testTarget = Target(
-      name: usePlatformSuffix ? "\(name)Tests_\(platform)" : "\(name)Tests",
+      name: "\(name)Tests",
       platform: platform,
       product: .unitTests,
       bundleId: "\(organization).\(name)Tests.\(platform)",
