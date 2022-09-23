@@ -38,7 +38,7 @@ public func frameworkTargets(
 
   if addTestTarget {
     let testTarget = Target(
-      name: "\(name)Tests" ,
+      name: "\(name)Tests",
       platform: platform,
       product: .unitTests,
       bundleId: "\(organization).\(name)Tests.\(platform)",
@@ -65,16 +65,15 @@ public func applicationTargets(
 ) -> [Target] {
   var targets: [Target] = []
 
-  let infoPlist: [String: InfoPlist.Value] = [
-    "CFBundleShortVersionString": "1.0",
-    "CFBundleVersion": "1",
-    "UIMainStoryboardFile": "",
-    "UILaunchStoryboardName": "LaunchScreen",
-  ]
+  var infoPlist: [String: InfoPlist.Value] = [:]
+  infoPlist.merge(.initialVersion) { $1 }
+  infoPlist.merge(.storyboard) { $1 }
+  infoPlist.merge(.atlantis) { $1 }
 
   let settings: Settings = .settings(base: [
     "DEVELOPMENT_TEAM": .string(team),
     "IPHONEOS_DEPLOYMENT_TARGET": .string(deploymentTarget ?? defaultDeploymentTarget),
+    "HEADER_SEARCH_PATHS": .array(dependencyHeaderSearchPaths),
   ])
 
   let appTargetName = name
